@@ -18,13 +18,21 @@ This is a test application integrating the **AppAmbit .NET MAUI SDK** for analyt
 2. Create a new app in the dashboard
 3. Copy your app key
 
-### 2. Configure App Key
+### 2. Configure App Keys
 
-Edit `MauiProgram.cs` and replace `"YOUR-APPKEY"` with your actual AppAmbit app key:
+Edit `MauiProgram.cs` and replace the app keys with your actual AppAmbit app keys for each platform:
 
 ```csharp
-.UseAppAmbit("YOUR-APPKEY") // Replace with your actual app key
+#if ANDROID
+    string appAmbitAppKey = "YOUR-ANDROID-APP-KEY";
+    builder.UseAppAmbit(appAmbitAppKey);
+#elif IOS
+    string appAmbitAppKey = "YOUR-IOS-APP-KEY";
+    builder.UseAppAmbit(appAmbitAppKey);
+#endif
 ```
+
+The SDK automatically selects the correct app key based on the platform being built.
 
 ### 3. Build and Run
 
@@ -76,23 +84,23 @@ Status messages appear below the buttons to confirm actions.
 
 ## Build Status
 
-- ✅ **Android**: Builds successfully (net9.0-android)
-- ⚠️ **iOS**: Requires Xcode 26.0 (currently have Xcode 16.4) - will build on compatible environment
+- ✅ **Android**: Builds and runs successfully (net9.0-android)
+- ✅ **iOS**: Builds and runs successfully (net9.0-ios)
 
 ---
 
 ## Testing Checklist
 
-- [ ] Replace `YOUR-APPKEY` in `MauiProgram.cs` with actual app key
-- [ ] Build Android app: `dotnet build -f net9.0-android`
-- [ ] Deploy to Android device/emulator
-- [ ] Test each button in the UI
-- [ ] Verify events appear in AppAmbit dashboard
-- [ ] Test crash reporting (app will restart)
-- [ ] Verify crash appears in dashboard on next launch
-- [ ] Build iOS app (requires Xcode 26.0)
-- [ ] Test on iOS device
-- [ ] Use AppAmbit distribution to send test builds
+- [x] Replace app keys in `MauiProgram.cs` with actual app keys
+- [x] Build Android app: `dotnet build -f net9.0-android`
+- [x] Deploy to Android device/emulator
+- [x] Test each button in the UI
+- [x] Verify events appear in AppAmbit dashboard
+- [x] Test crash reporting (app will restart)
+- [x] Verify crash appears in dashboard on next launch
+- [x] Build iOS app: `dotnet build -f net9.0-ios`
+- [x] Test on iOS device
+- [x] Verify all features work on both platforms
 
 ---
 
@@ -114,17 +122,50 @@ Status messages appear below the buttons to confirm actions.
 
 ### Dashboard Feedback
 
-*(To be completed after testing in dashboard)*
+- **Creating Apps**: Simple and intuitive process
+- **App Keys**: Easy to find and copy for each platform
+- **Analytics Dashboard**: Events appear correctly with all properties
+- **Crash Reports**: Crashes are captured and displayed with stack traces
+- **Overall Experience**: Dashboard is clean and easy to navigate
+
+---
+
+## What Worked ✅
+
+1. **Creating App and Launching with APP ID**: Works perfectly on both Android and iOS platforms
+2. **All Test Buttons**: Each test button in the UI works correctly:
+   - Track Sample Event ✅
+   - Track Event with Properties ✅
+   - Log Error Message ✅
+   - Log Warning Message ✅
+   - Test Crash ✅
+3. **Platform-Specific App Keys**: The SDK correctly uses the appropriate app key for each platform
+4. **SDK Integration**: Simple and straightforward - just one line per platform in `MauiProgram.cs`
+5. **End-to-End Testing**: Analytics events, logs, and crash reports all appear correctly in the AppAmbit dashboard
+
+---
+
+## Issues Found 🐛
+
+1. **Website Registration/Login Not Working** (RESOLVED)
+   - **Issue**: Initial attempts to register or login at https://appambit.com/onboarding/welcome resulted in 500 Server Error
+   - **Status**: ✅ Resolved - The issue was fixed and registration/login now works
+
+2. **Email Verification for Google Sign-In**
+   - **Issue**: When signing in with Google, email verification emails are being sent but going to spam folder instead of inbox
+   - **Impact**: Users may miss verification emails or think the system isn't working
+   - **Recommendation**: AppAmbit should review email deliverability settings and consider removing email verification requirement for OAuth providers (Google, GitHub) since they're already verified
+
+3. **Missing Forgot Password Feature**
+   - **Issue**: No "Forgot Password" link or option on the login page
+   - **Impact**: Users who forget their password cannot reset it through the UI
+   - **Recommendation**: Add a "Forgot Password" link on the login page that allows users to reset their password via email
 
 ---
 
 ## Known Issues
 
-1. **Xcode Version**: iOS builds require Xcode 26.0, but current environment has Xcode 16.4
-   - **Workaround**: Use a machine with Xcode 26.0 or update Xcode version
-   - **Note**: This is a .NET MAUI requirement, not an AppAmbit SDK issue
-
-2. **SQLite Warning**: Android build shows a warning about SQLite 16KB page size requirement for Android 16
+1. **SQLite Warning**: Android build shows a warning about SQLite 16KB page size requirement for Android 16
    - **Impact**: None for current Android versions
    - **Note**: This is from the SQLite dependency, not the AppAmbit SDK
 
@@ -132,11 +173,11 @@ Status messages appear below the buttons to confirm actions.
 
 ## Next Steps
 
-1. Get AppAmbit app key from dashboard
-2. Update `MauiProgram.cs` with the app key
-3. Build and deploy to Android device
-4. Test all features and verify in dashboard
-5. Build and test on iOS (when Xcode 26.0 is available)
+1. ✅ Get AppAmbit app keys from dashboard
+2. ✅ Update `MauiProgram.cs` with platform-specific app keys
+3. ✅ Build and deploy to Android device
+4. ✅ Test all features and verify in dashboard
+5. ✅ Build and test on iOS device
 6. Use AppAmbit distribution to send test builds
 7. Log GitHub issue with feedback
 8. Share feedback on Discord
