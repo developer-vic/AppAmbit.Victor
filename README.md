@@ -161,6 +161,18 @@ Status messages appear below the buttons to confirm actions.
    - **Impact**: Users who forget their password cannot reset it through the UI
    - **Recommendation**: Add a "Forgot Password" link on the login page that allows users to reset their password via email
 
+4. **API Endpoint Not Working**
+   - **Issue**: The documented API endpoint `https://api.appambit.com/v1/releases` does not resolve (DNS error: NXDOMAIN). The subdomain `api.appambit.com` does not exist.
+   - **Impact**: Cannot upload releases programmatically via API as documented. Users must use dashboard UI instead.
+   - **Details**: 
+     - DNS lookup for `api.appambit.com` returns NXDOMAIN
+     - Alternative endpoint `https://appambit.com/v1/releases` connects but upload behavior is unclear
+     - Documentation examples reference non-existent endpoint
+   - **Recommendation**: 
+     - Either create the `api.appambit.com` subdomain and configure DNS
+     - Or update documentation to reflect the correct API endpoint URL
+     - Provide clear API documentation with working endpoint examples
+
 ---
 
 ## Known Issues
